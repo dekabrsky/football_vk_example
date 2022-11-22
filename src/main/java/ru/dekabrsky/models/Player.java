@@ -6,6 +6,7 @@ public class Player {
     private final String name;
     private String team;
     private double cost;
+    private int followersCount;
     private HashMap<String, SeasonScore> scores = new HashMap<>();
 
     public Player(String name, String team, double cost) {
@@ -49,6 +50,17 @@ public class Player {
         return scores.values().stream().mapToInt(SeasonScore::getGoals).sum();
     }
 
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public void setScores(HashMap<String, SeasonScore> scores) {
+        this.scores = scores;
+    }
     @Override
     public String toString() {
         return this.name + " " + this.team + " " + this.cost + "млн евро";
