@@ -9,12 +9,11 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.enums.GroupsSort;
 import com.vk.api.sdk.objects.groups.Fields;
 import com.vk.api.sdk.objects.groups.Group;
+import com.vk.api.sdk.objects.groups.responses.GetByIdLegacyResponse;
 
 public class VkRepository {
-    private final int APP_ID =
-            0;
-    private final String CODE =
-            "";
+    private final int APP_ID = 0; // TODO замени на свои токены
+    private final String CODE = "";
     private final VkApiClient vk;
     private final UserActor actor;
 
@@ -30,15 +29,21 @@ public class VkRepository {
                 .count(1)
                 .execute()
                 .getItems()
-                .get(0);
+                .stream()
+                .findFirst()
+                .orElse(new Group());
     }
 
     public int getGroupMembersCount(Group miniGroup) throws ClientException, ApiException {
+        if (miniGroup.getId() == null) return 0;
+
         return vk.groups().getByIdLegacy(actor)
                 .groupId(miniGroup.getId().toString())
                 .fields(Fields.MEMBERS_COUNT)
                 .execute()
-                .get(0)
+                .stream()
+                .findFirst()
+                .orElse(new GetByIdLegacyResponse())
                 .getMembersCount();
     }
 }

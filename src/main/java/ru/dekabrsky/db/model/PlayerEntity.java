@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "playersFollowers")
-public class PlayerFollowersEntity {
+public class PlayerEntity {
     public static final String NAME_COLUMN = "name";
 
     @DatabaseField(generatedId = true)
@@ -16,11 +16,27 @@ public class PlayerFollowersEntity {
     @DatabaseField()
     private int followersCount;
 
-    public PlayerFollowersEntity() { }
+    @DatabaseField()
+    private String team;
 
-    public PlayerFollowersEntity(String name, int followersCount) {
+    public PlayerEntity() { }
+
+    public PlayerEntity(String name, int followersCount, String team) {
         this.followersCount = followersCount;
         this.name = name;
+        this.team = team;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
     }
 
     @Override
@@ -29,6 +45,7 @@ public class PlayerFollowersEntity {
                 "playerId=" + playerId +
                 ", name='" + name + '\'' +
                 ", followersCount=" + followersCount +
+                ", team='" + team + '\'' +
                 '}';
     }
 }

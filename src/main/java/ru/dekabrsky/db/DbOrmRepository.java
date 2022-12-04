@@ -5,7 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import ru.dekabrsky.db.model.PlayerFollowersEntity;
+import ru.dekabrsky.db.model.PlayerEntity;
 import ru.dekabrsky.models.Player;
 
 import java.sql.SQLException;
@@ -16,32 +16,32 @@ public class DbOrmRepository {
 
     private ConnectionSource connectionSource = null;
 
-    private Dao<PlayerFollowersEntity, String> playerDao = null;
+    private Dao<PlayerEntity, String> playerDao = null;
 
     public void connect() throws SQLException {
         connectionSource = new JdbcConnectionSource(URL);
 
-        playerDao = DaoManager.createDao(connectionSource, PlayerFollowersEntity.class);
+        playerDao = DaoManager.createDao(connectionSource, PlayerEntity.class);
     }
 
     public void createTable() throws SQLException {
-        TableUtils.createTable(connectionSource, PlayerFollowersEntity.class);
+        TableUtils.createTable(connectionSource, PlayerEntity.class);
     }
 
     public void savePlayers(List<Player> players) throws SQLException {
         for (var player: players) {
-            playerDao.create(new PlayerFollowersEntity(player.getName(), player.getFollowersCount()));
+            playerDao.create(new PlayerEntity(player.getName(), player.getFollowersCount(), player.getTeam()));
         }
     }
 
-    public List<PlayerFollowersEntity> getPlayers() throws SQLException {
+    public List<PlayerEntity> getPlayers() throws SQLException {
         return playerDao.queryForAll();
     }
 
-    public List<PlayerFollowersEntity> getPlayersByName(String name) throws SQLException {
+    public List<PlayerEntity> getPlayersByName(String name) throws SQLException {
         return playerDao.queryBuilder()
                 .where()
-                .eq(PlayerFollowersEntity.NAME_COLUMN, name)
+                .eq(PlayerEntity.NAME_COLUMN, name)
                 .query();
     }
 

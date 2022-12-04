@@ -15,6 +15,12 @@ public class Player {
         this.cost = cost;
     }
 
+    public Player(String name, String team, int followersCount) {
+        this.name = name;
+        this.team = team;
+        this.followersCount = followersCount;
+    }
+
     //region getters & setters
     public String getName() {
         return name;
